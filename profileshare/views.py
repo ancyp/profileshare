@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, render_template, url_for
 from flask_qrcode import QRcode
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ qrcode = QRcode(app)
 
 @app.route('/')
 def index():
-    return 'Index Page'
+    return render_template('sample_qr_application.html')
 
 
 @app.route('/hello')
