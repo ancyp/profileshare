@@ -1,5 +1,4 @@
 from flask import Flask, send_file, request, render_template, url_for, redirect, flash
-from flask_qrcode import QRcode
 import os
 from werkzeug.utils import secure_filename
 
@@ -7,13 +6,10 @@ from werkzeug.utils import secure_filename
 from pyzbar.pyzbar import decode, ZBarSymbol
 from PIL import Image
 
-# TODO
-UPLOAD_FOLDER = '/home/pavan/profileshare'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+from profileshare.models.models import SharedProfiles
+from profileshare import app, db
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-qrcode = QRcode(app)
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 @app.route('/')
@@ -59,7 +55,15 @@ def upload_file():
             # TODO lookup in DB & render profile page
             # request.form['username'] to extract
             profile = data[0].data
-            return render_template('response.html', fb="pavankm", ig="yo", user=profile, uniqID=profile)
+            return render_template('response.html', fb="pavankm", ig="pavanmutt", user=profile, uniqID=profile)
+    return '', 204
+
+
+@app.route('/test', methods=['GET'])
+def testdb():
+    c = db.session.query(SharedProfiles).all()
+    for profile in c:
+        print(profile)
     return '', 204
 
 
