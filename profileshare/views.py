@@ -6,15 +6,15 @@ from werkzeug.utils import secure_filename
 from pyzbar.pyzbar import decode, ZBarSymbol
 from PIL import Image
 
-from profileshare.models.models import SharedProfiles
-from profileshare import app, db
+from profileshare.models.models import SharedProfile, User
+from profileshare import app, db, qrcode
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 @app.route('/')
 def index():
-    return render_template('sample_qr_application.html')
+    return render_template('create_qr.html')
 
 
 @app.route('/hello')
@@ -61,10 +61,32 @@ def upload_file():
 
 @app.route('/test', methods=['GET'])
 def testdb():
-    c = db.session.query(SharedProfiles).all()
+    c = db.session.query(SharedProfile).all()
     for profile in c:
         print(profile)
     return '', 204
+
+
+@app.route('/create', methods=['POST'])
+def createQr():
+    name = request.form.get("username")
+    fb = request.form.get("select_fb", None)
+    ig = request.form.get("select_ig", None)
+    mail = request.form.get("select_mail", None)
+    phone = request.form.get("select_phone", None)
+
+    # TODO create SharedProfile
+    # share sharedprofile url as QR code
+    userProfile = db.session.query(User).filter(User.username == name).all()
+    # TODO random ID
+    shared = SharedProfile(username=userProfile[0].username, sharedProfileId="randomID", urls="http://www.google.com")
+    db.session.add(shared)
+    db.session.flush()
+
+    return send_file(
+        qrcode("0.0.0.0:5000/" + shared.username + "/" + shared.sharedProfileId, mode='raw'),
+        mimetype='image/png'
+    )
 
 
 if __name__ == '__main__':
