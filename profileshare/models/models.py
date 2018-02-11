@@ -14,7 +14,7 @@ class SharedProfile(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=False, nullable=False)
     fb = db.Column(db.String(80), unique=False, nullable=True)
     ig = db.Column(db.String(80), unique=False, nullable=True)
     mail = db.Column(db.String(80), unique=False, nullable=True)

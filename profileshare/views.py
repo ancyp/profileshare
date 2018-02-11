@@ -121,12 +121,11 @@ def createQr():
     db.session.flush()
     db.session.commit()
 
-    # qr = pyqrcode.create("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId)
-    # qr.png("horn.png", scale=6)
+    qr = pyqrcode.create("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId)
+    qr.png("horn.png", scale=6)
     return send_file(
-        qrcode("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId, mode='raw'),
-        mimetype='image/png'
-    )
+        'horn.png',
+        mimetype='image/jpg')
 
 
 if __name__ == '__main__':
