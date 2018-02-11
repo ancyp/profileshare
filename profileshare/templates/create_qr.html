@@ -1,19 +1,65 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create QR</title>
-</head>
-<body>
+    <head> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<form name="myprofile" onsubmit="validateForm()" action="create" method="POST">
-    name<input name="username" id="username" type="text">
-    FB<input id="select_fb" name="select_fb" type="checkbox">
-    IG<input id="select_ig" name="select_ig" type="checkbox">
-    Mail<input id="select_mail" name="select_mail" type="checkbox">
-    Phone<input id="select_phone" name="select_phone" type="checkbox">
-    <button type="submit">CreateQR</button>
-</form>
 
-</body>
+		<!-- Website CSS style -->
+		<!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='shareqr.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='newuser.css') }}">
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+		<title>Admin</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row main">
+				<div class="main-login main-center">
+				<h5>Share your contact by entering info</h5>
+					<form class="" name="myprofile" onsubmit="validateForm()" action="createuser" method="POST">
+						
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Username</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Name"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="cols-sm-2 control-label">Select to share</label>
+							<div class="cols-sm-10">
+                                    <label for="default" class="btn btn-default">Email <input type="checkbox" id="select_mail" name="select_mail" class="badgebox"><span class="badge">&check;</span></label>
+                                    <label for="primary" class="btn btn-primary">Facebook <input type="checkbox" id="select_fb" name="select_fb" class="badgebox"><span class="badge">&check;</span></label>
+                                    <label for="info" class="btn btn-info">LinkedIn <input type="checkbox" id="select_ig" name="select_ig" class="badgebox"><span class="badge">&check;</span></label>
+                                    <label for="success" class="btn btn-success">Phone <input type="checkbox" id="select_phone" name="select_phone" class="badgebox"><span class="badge">&check;</span></label>
+							</div>
+						</div>
+
+						<div class="form-group ">
+							<button  type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Share QR code</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+
+		 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	</body>
 </html>
