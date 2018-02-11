@@ -121,7 +121,7 @@ def createQr():
     db.session.flush()
     db.session.commit()
 
-    qr = pyqrcode.create("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId)
+    qr = pyqrcode.create("http://172.16.5.82:5000/card/" + shared.username + "/" + shared.sharedProfileId)
     qr.png("horn.png", scale=6)
     return send_file(
         'horn.png',
