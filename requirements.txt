@@ -1,2 +1,4 @@
 Flask
 Flask-QRcode
+flask_sqlalchemy
+flask_migrate

@@ -1,21 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='card.css') }}">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Card</title>
 </head>
 <body>
 
-{% if links.fb %}
-    FB<h1>Hello {{ links.fb }}!</h1>
-{% endif %}
+<div class="container">
+	<div class="row">
+		<div class="col-lg-3 col-sm-6">
 
-{% if links.ig %}
-    IG<h1>Hello {{ links.ig }}!</h1>
-{% endif %}
+            <div class="card hovercard">
+                <div class="cardheader">
 
-<h1>Hello {{ user }}!</h1>
-<h1>Hello {{ uniqID }}!</h1>
+                </div>
+                <div class="avatar">
+
+                  <!--  <img alt="" src="https://github.com/ancyp/ancyp.github.io/blob/master/images/ancy.jpg"> -->
+                </div>
+                <div class="info">
+                    <div class="title">
+                       {{ user }}
+                    </div>
+                    <div class="desc"> </div>
+                    <div class="desc"></div>
+                    <div class="desc"></div>
+                </div>
+                <div class="bottom">
+                   
+          
+    
+				   {% if links.fb %}
+                    <a class="btn btn-primary btn-sm" rel="publisher"
+                       href="{{ links.fb }}">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    {% endif %}
+
+                    {% if links.ig %}
+                    <a class="btn btn-warning btn-sm" rel="publisher" href="{{ links.ig }}">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                    {% endif %}
+
+                     {% if links.mail %}
+                    <a class="btn btn-warning btn-sm" rel="publisher" href="{{ links.mail }}">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    {% endif %}
+
+                     {% if links.phone %}
+                    <a class="btn btn-warning btn-sm" rel="publisher" href="{{ links.phone }}">
+                        <i class="fa fa-phone"></i>
+                    </a>
+                    {% endif %}
+
+                     <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/ancyphilip">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+
+                    <a class="btn btn-primary btn-twitter btn-sm" href="https://github.com/ancyp">
+                        <i class="fa fa-github-square"></i>
+                    </a>
+
+
+                </div>
+            </div>
+
+        </div>
+
+	</div>
+</div>
 
 </body>
 </html>
+
+

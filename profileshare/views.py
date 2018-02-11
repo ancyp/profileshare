@@ -123,8 +123,12 @@ def createQr():
 
     # qr = pyqrcode.create("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId)
     # qr.png("horn.png", scale=6)
+     #qrcode("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId, mode='raw'),
+     #  mimetype='image/png'
+
+    #return render_template('sample_qr_application.html',qrcodeURL = url)
     return send_file(
-        qrcode("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId, mode='raw'),
+        qrcode("hi", mode='raw'),
         mimetype='image/png'
     )
 
