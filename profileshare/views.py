@@ -1,7 +1,7 @@
 from flask import Flask, send_file, request, render_template, url_for, redirect, flash
 import os
 from werkzeug.utils import secure_filename
-
+import uuid
 # for decode
 from pyzbar.pyzbar import decode, ZBarSymbol
 from PIL import Image
@@ -67,6 +67,25 @@ def testdb():
     return '', 204
 
 
+@app.route('/newuser', methods=['GET'])
+def newUser():
+    return render_template('new_user.html')
+
+
+@app.route('/createuser', methods=['POST'])
+def createUser():
+    name = request.form.get("username")
+    fb = request.form.get("fb", None)
+    ig = request.form.get("ig", None)
+    mail = request.form.get("mail", None)
+    phone = request.form.get("phone", None)
+    userobj = User(username=name, mail=mail, fb=fb, ig=ig, phone=phone)
+    db.session.add(userobj)
+    db.session.flush()
+    db.session.commit()
+    return 'success', 200
+
+
 @app.route('/create', methods=['POST'])
 def createQr():
     name = request.form.get("username")
@@ -79,7 +98,7 @@ def createQr():
     # share sharedprofile url as QR code
     userProfile = db.session.query(User).filter(User.username == name).all()
     # TODO random ID
-    shared = SharedProfile(username=userProfile[0].username, sharedProfileId="randomID", urls="http://www.google.com")
+    shared = SharedProfile(username=userProfile[0].username, sharedProfileId=uuid.uuid4().hex, urls="http://www.google.com")
     db.session.add(shared)
     db.session.flush()
 
