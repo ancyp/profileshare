@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Card</title>
 </head>
 <body>
 
-{% if fb %}
-    <h1>Hello {{ fb }}!</h1>
+{% if links.fb %}
+    FB<h1>Hello {{ links.fb }}!</h1>
 {% endif %}
 
-{% if ig %}
-    <h1>Hello {{ ig }}!</h1>
+{% if links.ig %}
+    IG<h1>Hello {{ links.ig }}!</h1>
 {% endif %}
 
 <h1>Hello {{ user }}!</h1>

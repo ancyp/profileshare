@@ -3,25 +3,23 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 # for decode
+import json
 from pyzbar.pyzbar import decode, ZBarSymbol
 from PIL import Image
-
+import pyqrcode
 from profileshare.models.models import SharedProfile, User
 from profileshare import app, db, qrcode
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
-@app.route('/')
-def index():
-    return render_template('create_qr.html')
+# utility method
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/hello')
-def hello():
-    return 'Hello, World'
-
-
+# used to test QR code  - not part of app
 @app.route('/qrcode', methods=['GET'])
 def get_qrcode():
     # please get /qrcode?data=<qrcode_data>
@@ -32,11 +30,7 @@ def get_qrcode():
     )
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
+# upload QR code image and check response
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -59,6 +53,7 @@ def upload_file():
     return '', 204
 
 
+# dummy method
 @app.route('/test', methods=['GET'])
 def testdb():
     c = db.session.query(SharedProfile).all()
@@ -67,11 +62,13 @@ def testdb():
     return '', 204
 
 
+# create a new user
 @app.route('/newuser', methods=['GET'])
 def newUser():
     return render_template('new_user.html')
 
 
+# called when the form at /newuser is submitted
 @app.route('/createuser', methods=['POST'])
 def createUser():
     name = request.form.get("username")
@@ -83,27 +80,50 @@ def createUser():
     db.session.add(userobj)
     db.session.flush()
     db.session.commit()
-    return 'success', 200
+    return render_template('create_user_success.html', user=userobj)
 
 
+# show card details
+@app.route('/card/<string:username>/<string:sharedProfileId>')
+def displaycard(username, sharedProfileId):
+    card = db.session.query(SharedProfile).filter(SharedProfile.sharedProfileId == sharedProfileId).all()[0]
+    return render_template('response.html', user=username, uniqID=sharedProfileId, links=json.loads(card.urls))
+
+
+# Enter valid username and select which profiles to shares
+@app.route('/share')
+def index():
+    return render_template('create_qr.html')
+
+
+# This is called when the form on /share is submitted
+# Returns a QR code for the user & their profiles
 @app.route('/create', methods=['POST'])
 def createQr():
     name = request.form.get("username")
-    fb = request.form.get("select_fb", None)
-    ig = request.form.get("select_ig", None)
-    mail = request.form.get("select_mail", None)
-    phone = request.form.get("select_phone", None)
+    # TODO include based on checkbox
+    # TODO duplicate checks
+    fb = request.form.get("fb", None)
+    ig = request.form.get("ig", None)
+    mail = request.form.get("mail", None)
+    phone = request.form.get("phone", None)
 
-    # TODO create SharedProfile
-    # share sharedprofile url as QR code
     userProfile = db.session.query(User).filter(User.username == name).all()
-    # TODO random ID
-    shared = SharedProfile(username=userProfile[0].username, sharedProfileId=uuid.uuid4().hex, urls="http://www.google.com")
+    userProfile = userProfile[0]
+    url = {
+        'fb': userProfile.fb,
+        'ig': userProfile.ig,
+        'mail': userProfile.mail,
+        'phone': userProfile.phone
+    }
+    shared = SharedProfile(username=userProfile.username, sharedProfileId=uuid.uuid4().hex, urls=json.dumps(url))
     db.session.add(shared)
     db.session.flush()
+    db.session.commit()
 
+    qr = pyqrcode.create("0.0.0.0:5000/card/" + shared.username + "/" + shared.sharedProfileId)
     return send_file(
-        qrcode("0.0.0.0:5000/" + shared.username + "/" + shared.sharedProfileId, mode='raw'),
+        qr.png("horn.png", scale=6),
         mimetype='image/png'
     )
 
