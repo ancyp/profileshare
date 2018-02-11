@@ -125,7 +125,7 @@ def createQr():
     qr.png("horn.png", scale=6)
     return send_file(
         'horn.png',
-        mimetype='image/jpg')
+        mimetype='image/png')
 
 
 if __name__ == '__main__':
